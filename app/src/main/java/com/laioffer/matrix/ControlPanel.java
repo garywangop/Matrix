@@ -9,6 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.android.material.navigation.NavigationView;
+
 public class ControlPanel extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
@@ -25,6 +27,26 @@ public class ControlPanel extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.baseline_home_black_18dp);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+                        if (menuItem.getItemId() == R.id.drawer_logout) {
+                            Config.username = null;
+                            logout();
+                        }
+                        return true;
+                    }
+                });
+
     }
 
     @Override
@@ -36,5 +58,10 @@ public class ControlPanel extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void logout() {
+        finish();
+    }
+
 
 }

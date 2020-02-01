@@ -32,4 +32,6 @@ public class OnBoardingActivity extends AppCompatActivity {
         viewpager.setCurrentItem(page);
     }
 
+
+
 }
