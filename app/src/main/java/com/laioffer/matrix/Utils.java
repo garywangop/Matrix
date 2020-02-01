@@ -7,11 +7,6 @@ import java.security.MessageDigest;
 
 public class Utils {
 
-    /**
-     * Md5 encryption, encode string
-     * @param input the string to be encoded
-     * @return encoded string
-     */
     public static String md5Encryption(final String input){
         String result = "";
         try{
