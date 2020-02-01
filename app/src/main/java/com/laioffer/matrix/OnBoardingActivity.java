@@ -7,31 +7,32 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
+
 public class OnBoardingActivity extends AppCompatActivity {
-    private ViewPager viewpager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_on_boarding);
+  private ViewPager viewPager;
 
-        // Find components
-        viewpager = findViewById(R.id.viewpager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_on_boarding);
 
-        // Create adapter for providing fragments to the viewPager
-        OnBoardingPageAdapter onBoardingPageAdapter = new OnBoardingPageAdapter(getSupportFragmentManager());
-        viewpager.setAdapter(onBoardingPageAdapter);
+    // Find components
+    viewPager = findViewById(R.id.viewpager);
+    TabLayout tabLayout = findViewById(R.id.sliding_tabs);
 
-        // Connect tablayout to the viewpager
-        tabLayout.setupWithViewPager(viewpager);
-    }
+    // Create adapter for providing fragments to the viewPager
+    OnBoardingPageAdapter onBoardingPageAdapter = new OnBoardingPageAdapter(this, getSupportFragmentManager());
+    viewPager.setAdapter(onBoardingPageAdapter);
 
-    // switch viewpage to #page
-    public void setCurrentPage(int page) {
-        viewpager.setCurrentItem(page);
-    }
+    // Connect tablayout to the viewpager
+    tabLayout.setupWithViewPager(viewPager);
+  }
 
 
+  // switch viewpage to #page
+  public void setCurrentPage(int page) {
+    viewPager.setCurrentItem(page);
+  }
 
 }
