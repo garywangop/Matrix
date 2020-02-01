@@ -20,7 +20,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
   private OnClickListener mClickListener;
 
   public interface OnClickListener{
-    public void setItem(String item);
+    void setItem(String item);
   }
 
   public void setClickListener(ReportRecyclerViewAdapter.OnClickListener callback) {
@@ -66,6 +66,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
       }
     });
   }
+
 
   // total number of cells
   @Override
