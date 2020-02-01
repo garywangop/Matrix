@@ -14,4 +14,5 @@
     <item name="android:windowBackground">@color/colorDark</item>
   </style>
 
+
 </resources>

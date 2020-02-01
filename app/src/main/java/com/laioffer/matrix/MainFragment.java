@@ -35,6 +35,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
   private LocationTracker locationTracker;
   private FloatingActionButton fabReport;
   private ReportDialog dialog;
+  private FloatingActionButton fabFocus;
 
   public static MainFragment newInstance() {
 
@@ -77,6 +78,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
       }
     });
 
+    fabFocus = (FloatingActionButton) view.findViewById(R.id.fab_focus);
+
+    fabFocus.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mapView.getMapAsync(MainFragment.this);
+      }
+    });
 
     if (mapView != null) {
       mapView.onCreate(null);
@@ -145,7 +154,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
   }
 
   private void showDialog(String label, String prefillText) {
-    dialog = new ReportDialog(getContext());
+    int cx = (int) (fabReport.getX() + (fabReport.getWidth() / 2));
+    int cy = (int) (fabReport.getY()) + fabReport.getHeight() + 56;
+    dialog = ReportDialog.newInstance(getContext(), cx, cy);
     dialog.show();
   }
 

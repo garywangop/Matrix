@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private List<Item> mItems;
   private LayoutInflater mInflater;
@@ -27,25 +27,36 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     mClickListener = callback;
   }
 
+
   public ReportRecyclerViewAdapter(Context context, List<Item> items) {
     this.mInflater = LayoutInflater.from(context);
     this.mItems = items;
   }
 
-
-  @NonNull
+  /**
+   * Step 2: create holder prepare listview to show
+   * @param parent the listview
+   * @param viewType mView type
+   * @return created mView holder
+   */
   @Override
-  public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View view = mInflater.inflate(R.layout.recyclerview_item, parent, false);
     RecyclerView.ViewHolder holder = new ViewHolder(view);
     return holder;
   }
 
+  /**
+   * Step 3: render mView holder on screen
+   * @param holder mView holder created by onCreateViewHolder
+   * @param position corresponding position
+   */
   @Override
-  public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+  public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
     ViewHolder viewHolder = (ViewHolder)holder;
     viewHolder.mTextView.setText(mItems.get(position).getDrawable_label());
     viewHolder.mImageView.setImageResource(mItems.get(position).getDrawable_id());
+
     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -56,6 +67,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     });
   }
 
+  // total number of cells
   @Override
   public int getItemCount() {
     return mItems.size();
@@ -67,9 +79,11 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
   public class ViewHolder extends RecyclerView.ViewHolder {
     TextView mTextView;
     ImageView mImageView;
+    View mView;
 
     ViewHolder(View itemView) {
       super(itemView);
+      mView = itemView;
       mTextView = (TextView) itemView.findViewById(R.id.info_text);
       mImageView = (ImageView) itemView.findViewById(R.id.info_img);
     }
