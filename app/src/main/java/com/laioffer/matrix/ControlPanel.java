@@ -8,8 +8,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.DecimalFormat;
 
 public class ControlPanel extends AppCompatActivity {
 
@@ -27,6 +31,49 @@ public class ControlPanel extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.baseline_home_black_18dp);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        // location tracker
+        final LocationTracker mLocationTracker = new LocationTracker(this);
+        drawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        final TextView user_textview = (TextView) drawerView.findViewById(R.id.user_name);
+                        final TextView location_textview = (TextView) drawerView.findViewById(R.id.user_location);
+
+                        // Respond when the drawer is opened
+                        mLocationTracker.getLocation();
+                        final double longitude = mLocationTracker.getLongitude();
+                        final double latitude = mLocationTracker.getLatitude();
+
+                        if (Config.username == null) {
+                            user_textview.setText("");
+                            location_textview.setText("");
+                        } else {
+                            user_textview.setText(Config.username);
+                            location_textview.setText("Lat=" + new DecimalFormat(".##").
+                                    format(latitude) + ",Lon=" + new DecimalFormat(".##").
+                                    format(longitude));
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
