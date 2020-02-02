@@ -39,6 +39,7 @@ public class ReportDialog extends Dialog {
     private EditText mCommentEditText;
     private ImageView mEventTypeImg;
     private TextView mTypeTextView;
+    private DialogCallBack mDialogCallBack;
 
     private void setUpEventSpecs(final View dialogView) {
         mImageCamera = (ImageView) dialogView.findViewById(R.id.event_camera_img);
@@ -47,7 +48,28 @@ public class ReportDialog extends Dialog {
         mCommentEditText = (EditText) dialogView.findViewById(R.id.event_comment);
         mEventTypeImg = (ImageView) dialogView.findViewById(R.id.event_type_img);
         mTypeTextView = (TextView) dialogView.findViewById(R.id.event_type);
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialogCallBack.onSubmit(mCommentEditText.getText().toString(), mEventype);
+
+            }
+        });
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewSwitcher.showPrevious();
+            }
+        });
+
     }
+
+    public void setDialogCallBack(DialogCallBack dialogCallBack) {
+        mDialogCallBack = dialogCallBack;
+    }
+
 
     interface DialogCallBack {
         void onSubmit(String editString, String event_type);
