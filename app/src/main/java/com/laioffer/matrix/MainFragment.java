@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
@@ -36,6 +40,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
   private FloatingActionButton fabReport;
   private ReportDialog dialog;
   private FloatingActionButton fabFocus;
+  private DatabaseReference database;
 
   public static MainFragment newInstance() {
 
@@ -63,7 +68,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_main, container, false);
+    view = inflater.inflate(R.layout.fragment_main, container,
+            false);
+    database = FirebaseDatabase.getInstance().getReference();
+    return view;
   }
 
   @Override
@@ -158,6 +166,39 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     int cy = (int) (fabReport.getY()) + fabReport.getHeight() + 56;
     dialog = ReportDialog.newInstance(getContext(), cx, cy);
     dialog.show();
+  }
+
+  private String uploadEvent(String user_id, String editString, String event_type) {
+    TrafficEvent event = new TrafficEvent();
+
+    event.setEvent_type(event_type);
+    event.setEvent_description(editString);
+    event.setEvent_reporter_id(user_id);
+    event.setEvent_timestamp(System.currentTimeMillis());
+    event.setEvent_latitude(locationTracker.getLatitude());
+    event.setEvent_longitude(locationTracker.getLongitude());
+    event.setEvent_like_number(0);
+    event.setEvent_comment_number(0);
+
+    String key = database.child("events").push().getKey();
+    event.setId(key);
+    database.child("events").child(key).setValue(event, new DatabaseReference.CompletionListener() {
+      @Override
+      public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+        if (databaseError != null) {
+          Toast toast = Toast.makeText(getContext(),
+                  "The event is failed, please check your network status.", Toast.LENGTH_SHORT);
+          toast.show();
+          dialog.dismiss();
+        } else {
+          Toast toast = Toast.makeText(getContext(), "The event is reported", Toast.LENGTH_SHORT);
+          toast.show();
+          //TODO: update map fragment
+        }
+      }
+    });
+
+    return key;
   }
 
 }
