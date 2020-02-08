@@ -44,4 +44,7 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //Add admob dependency
+    implementation 'com.google.firebase:firebase-ads:17.0.0'
 }
